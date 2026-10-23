@@ -143,10 +143,9 @@ function renderTabs() {
     const b = document.createElement('button');
     b.type = 'button'; b.role = 'tab'; b.className = 'tab'; b.dataset.v = key; b.disabled = !total;
     b.setAttribute('aria-selected', filters.deck === key);
-    b.innerHTML = `<span></span><small></small><i></i>`;
+    b.innerHTML = `<span></span><small></small>`;
     b.firstChild.textContent = label;
     b.querySelector('small').textContent = `${d}/${total}`;
-    b.querySelector('i').style.setProperty('--p', total ? d / total : 0);
     b.onclick = () => { filters.deck = key; render(); };
     return b;
   };
@@ -168,9 +167,9 @@ function render() {
 
   const pct = Math.round((done.size / cards.length) * 100);
   $('count').textContent = t('ui.header.collected', { done: done.size, total: cards.length });
-  $('ring-pct').textContent = `${pct}%`;
-  $('ring-fg').style.strokeDasharray = `${pct} 100`;
-  $('ring-fg').closest('.ring').setAttribute('aria-label', t('ui.header.percent', { percent: pct }));
+  $('meter-fg').style.width = `${pct}%`;
+  $('meter').setAttribute('aria-valuenow', pct);
+  $('meter').setAttribute('aria-label', t('ui.header.percent', { percent: pct }));
   $('showing').textContent = t('ui.filters.showing', { count: list.length });
   $('status').querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.v === filters.status));
   renderTabs();

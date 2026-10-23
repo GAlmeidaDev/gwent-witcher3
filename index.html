@@ -65,24 +65,20 @@
 
   <div id="app" hidden>
     <header class="top">
-      <div class="top-row">
+      <div class="bar">
         <div class="brand-block">
-          <img class="medal" src="witcher-logo.png?v=2" alt="" width="46" height="46">
-          <div><h1 class="brand" data-i18n="ui.appTitle"></h1>
-          <p class="sub" data-i18n="ui.appSubtitle"></p></div>
+          <img class="medal" src="witcher-logo.png?v=2" alt="" width="30" height="30">
+          <h1 class="brand" data-i18n="ui.appTitle"></h1>
+          <span class="sub" data-i18n="ui.appSubtitle"></span>
         </div>
-        <div class="ring" role="img" aria-live="polite">
-          <svg viewBox="0 0 44 44" aria-hidden="true">
-            <circle class="track" cx="22" cy="22" r="19"/>
-            <circle id="ring-fg" class="fg" cx="22" cy="22" r="19" pathLength="100"/>
-          </svg>
-          <span id="ring-pct">0%</span>
+        <div class="progress">
+          <span id="count"></span>
+          <div class="meter" id="meter" role="progressbar" aria-valuemin="0" aria-valuemax="100"><i id="meter-fg"></i></div>
         </div>
-        <div class="progress-text"><strong id="count"></strong></div>
         <div class="user">
           <select class="lang" aria-label="Language"></select>
           <span id="username" class="uname"></span>
-          <button class="btn ghost small" id="logout" data-i18n="ui.header.signOut"></button>
+          <button class="textbtn" id="logout" data-i18n="ui.header.signOut"></button>
         </div>
       </div>
       <nav id="decks" class="tabs" role="tablist"></nav>
