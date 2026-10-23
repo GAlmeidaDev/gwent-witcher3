@@ -30,10 +30,12 @@ async function boot() {
   await initI18n();
   buildLangSelects();
   applyStatic();
-  backend.onPasswordRecovery(() => { recovering = true; showAuthForm('reset-form'); $('auth').hidden = false; $('app').hidden = true; buildAuthBg(); });
+  const showReset = () => { recovering = true; showAuthForm('reset-form'); $('auth').hidden = false; $('app').hidden = true; buildAuthBg(); };
+  backend.onPasswordRecovery(showReset);
   user = await backend.currentUser().catch(() => null);
-  if (user && !recovering) await enter();
-  else if (!user) { buildAuthBg(); setMode('login'); $('auth').hidden = false; }
+  if (backend.isRecovery()) showReset();           // veio do link do e-mail: pede a nova senha em vez de entrar direto
+  else if (user) await enter();
+  else { buildAuthBg(); setMode('login'); $('auth').hidden = false; }
 }
 
 /** Fundo do login: mapa de Velen em zoom baixo, escurecido por CSS. */
@@ -95,13 +97,13 @@ $('forgot-form').addEventListener('submit', async (e) => {
     $('forgot-ok').hidden = false;
   } catch (err) { $('forgot-error').textContent = errText(err); }
 });
-$('reset-back').onclick = () => { recovering = false; showAuthForm('auth-form'); };
+$('reset-back').onclick = async () => { recovering = false; backend.endRecovery(); history.replaceState(null, '', location.pathname); await backend.signOut().catch(() => {}); showAuthForm('auth-form'); };
 $('reset-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   $('reset-error').textContent = '';
   try {
     user = await backend.updatePassword(new FormData(e.target).get('password'));
-    recovering = false;
+    recovering = false; backend.endRecovery();
     history.replaceState(null, '', location.pathname); // tira o token da barra de endereço
     await enter();
   } catch (err) { $('reset-error').textContent = errText(err); }

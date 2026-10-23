@@ -1,7 +1,16 @@
 // Acesso ao Supabase (login por e-mail e progresso por usuário). Tudo roda no navegador.
 const cfg = window.APP_CONFIG ?? {};
 export const configured = Boolean(cfg.supabaseUrl && cfg.supabaseKey && window.supabase);
+
+// O link de "esqueci a senha" traz `type=recovery` no endereço. Isso precisa ser lido AGORA, antes de o
+// cliente do Supabase processar e limpar o endereço, senão o app só veria uma sessão válida e entraria direto.
+let recovery = /[#&?]type=recovery\b/.test(location.hash + location.search);
+const recoveryListeners = new Set();
 const sb = configured ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey) : null;
+// Registrado já na criação do cliente: o evento PASSWORD_RECOVERY é emitido na inicialização, cedo demais para ouvir depois.
+sb?.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') { recovery = true; recoveryListeners.forEach((cb) => cb()); }
+});
 
 /** Converte erros do Supabase em códigos que a interface traduz (ui.errors.<código>). */
 function fail(error) {
@@ -54,11 +63,10 @@ export async function updatePassword(password) {
   return toUser(data.user);
 }
 
-/** Chamado quando o usuário abre o link de redefinição recebido por e-mail. */
-export function onPasswordRecovery(cb) {
-  if (!sb) return;
-  sb.auth.onAuthStateChange((event) => { if (event === 'PASSWORD_RECOVERY') cb(); });
-}
+/** O usuário abriu o link de redefinição recebido por e-mail? */
+export const isRecovery = () => recovery;
+export const onPasswordRecovery = (cb) => recoveryListeners.add(cb);
+export const endRecovery = () => { recovery = false; };
 
 export async function loadProgress() {
   const rows = check(await needSb().from('progress').select('card_id'));
