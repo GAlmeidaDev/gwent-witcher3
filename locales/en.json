@@ -1,0 +1,146 @@
+{
+  "ui": {
+    "appTitle": "Gwent Checklist",
+    "appSubtitle": "The Witcher 3: Wild Hunt",
+    "language": "Language",
+    "auth": {
+      "tagline": "Track every Gwent card you've collected. Your progress is saved to your account.",
+      "username": "Username",
+      "password": "Password",
+      "signIn": "Sign in",
+      "createAccount": "Create account",
+      "or": "or",
+      "forgot": "Forgot my password",
+      "email": "E-mail",
+      "back": "Back",
+      "haveAccount": "I have an account",
+      "forgotTitle": "Forgot password",
+      "forgotText": "Enter your account e-mail and we'll send a link to set a new password.",
+      "forgotSend": "Send link",
+      "forgotSent": "If an account exists for that e-mail, we sent a link (valid for 30 minutes). Check spam too.",
+      "resetTitle": "New password",
+      "resetText": "Choose your account's new password.",
+      "newPassword": "New password",
+      "resetSubmit": "Save password",
+      "checkEmail": "Account created! Check your e-mail to confirm it, then sign in."
+    },
+    "header": {
+      "signOut": "Sign out",
+      "collected": "{done} of {total} collected",
+      "percent": "{percent}% complete"
+    },
+    "filters": {
+      "search": "Search by card, NPC or place…",
+      "allDecks": "All decks",
+      "allContent": "Game + DLCs",
+      "statusAll": "All cards",
+      "statusMissing": "Missing",
+      "statusDone": "Collected",
+      "showing": "Showing {count}",
+      "clear": "Clear filters"
+    },
+    "card": {
+      "collected": "Collected",
+      "markCollected": "Mark as collected",
+      "strength": "Strength {value}",
+      "noLocation": "Location not documented",
+      "version": "Version {n}",
+      "locations": "Where to get it",
+      "abilities": "Abilities",
+      "close": "Close",
+      "viewDetails": "View details",
+      "noResults": "No cards match your filters.",
+      "openMap": "Open on map"
+    },
+    "errors": {
+      "saveFailed": "Couldn't save. Check your connection and try again.",
+      "generic": "Something went wrong.",
+      "unauthenticated": "Your session expired. Please sign in again.",
+      "bad_password": "Password must be 6–128 characters.",
+      "invalid_credentials": "Invalid e-mail or password.",
+      "unknown_card": "Unknown card.",
+      "too_many_attempts": "Too many attempts. Wait 15 minutes and try again.",
+      "bad_email": "Enter a valid e-mail.",
+      "email_taken": "That e-mail is already in use.",
+      "not_configured": "The accounts backend isn't configured yet.",
+      "email_not_confirmed": "Confirm your e-mail before signing in (check inbox and spam).",
+      "same_password": "The new password must differ from the current one."
+    },
+    "map": {
+      "title": "Gwent map",
+      "back": "Back to checklist",
+      "approx": "approx.",
+      "gwentPlayer": "Gwent player",
+      "target": "Card location",
+      "regionNames": {
+        "skellige": "Skellige",
+        "velen": "Velen / Novigrad",
+        "toussaint": "Toussaint",
+        "white_orchard": "White Orchard",
+        "kaer_morhen": "Kaer Morhen"
+      },
+      "showAll": "Show all Gwent players",
+      "hint": "Gold dots are every Gwent player in this region.",
+      "approxNote": "Approximate position: nearest named place.",
+      "signpost": "Signpost",
+      "flag": "Card location"
+    }
+  },
+  "decks": {
+    "Monsters": "Monsters",
+    "Nilfgaard": "Nilfgaardian Empire",
+    "Northern": "Northern Realms",
+    "Scoiatael": "Scoia'tael",
+    "Skellige": "Skellige",
+    "Neutral": "Neutral"
+  },
+  "dlc": {
+    "Base": "Base game",
+    "Hearts of Stone": "Hearts of Stone",
+    "Blood and Wine": "Blood and Wine"
+  },
+  "types": {
+    "Unit": "Unit",
+    "Hero": "Hero",
+    "leader": "Leader",
+    "Weather": "Weather",
+    "Special": "Special"
+  },
+  "roles": {
+    "innkeep": "innkeeper",
+    "merchant": "merchant",
+    "quartermaster": "quartermaster",
+    "armorer": "armorer",
+    "barber": "barber",
+    "butcher": "butcher",
+    "herbalist": "herbalist",
+    "blacksmith": "blacksmith",
+    "madame": "madame",
+    "sommelier": "sommelier"
+  },
+  "src": {
+    "countPrefix": "{count}× ",
+    "base_deck": "Part of the starting deck",
+    "random_reward": "Random reward from Gwent players",
+    "purchase": "Purchased from {target}",
+    "won": "Won from {target}",
+    "won_in_quest": "Won from {target} during {quest}",
+    "won_quest": "Won during {quest}",
+    "quest_reward": "Reward for completing {quest}",
+    "possible_reward": "Possible reward during {quest}",
+    "quest_complete": "Complete {quest}",
+    "transformed": "Transformed version of {card}",
+    "role_place": "{role} at {place}",
+    "who_place": "{who} at {place}"
+  },
+  "rawSources": {},
+  "abilities": {},
+  "names": {},
+  "regions": {
+    "novigrad": "Velen / Novigrad",
+    "skellige": "Skellige",
+    "toussaint": "Toussaint",
+    "white-orchard": "White Orchard",
+    "kaer-morhen": "Kaer Morhen"
+  }
+}

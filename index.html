@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#100d0b">
+  <title>Gwent Checklist · The Witcher 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&display=swap">
+  <link rel="icon" href="witcher-logo.png?v=2" type="image/png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="watermark" aria-hidden="true"></div>
+    <section id="auth" hidden>
+    <div class="auth-bg" aria-hidden="true"></div>
+    <form id="auth-form">
+      <img class="emblem" src="witcher-logo.png?v=2" alt="" width="96" height="96">
+      <h1 class="wordmark" data-i18n="ui.appTitle"></h1>
+      <p class="sub" data-i18n="ui.appSubtitle"></p>
+      <p class="tagline" data-i18n="ui.auth.tagline"></p>
+      <label class="notch field" id="username-field" hidden><span class="sr" data-i18n="ui.auth.username"></span>
+        <input name="username" autocomplete="nickname" minlength="3" maxlength="24" data-i18n-placeholder="ui.auth.username"></label>
+      <label class="notch field"><span class="sr" data-i18n="ui.auth.email"></span>
+        <input name="email" type="email" autocomplete="email" required maxlength="254" data-i18n-placeholder="ui.auth.email"></label>
+      <label class="notch field"><span class="sr" data-i18n="ui.auth.password"></span>
+        <input name="password" type="password" autocomplete="current-password" required minlength="6" data-i18n-placeholder="ui.auth.password"></label>
+      <p id="auth-error" class="error" role="alert"></p>
+      <p id="auth-info" class="okmsg" role="status" hidden data-i18n="ui.auth.checkEmail"></p>
+      <div class="auth-actions">
+        <button type="submit" id="auth-submit" class="notch nbtn primary"></button>
+        <button type="button" class="notch nbtn" id="register"></button>
+      </div>
+      <button type="button" class="linkbtn" id="forgot" data-i18n="ui.auth.forgot"></button>
+      <div class="auth-lang notch"><select class="lang" aria-label="Language"></select></div>
+    </form>
+    <form id="forgot-form" hidden>
+      <img class="emblem" src="witcher-logo.png?v=2" alt="" width="96" height="96">
+      <h1 class="wordmark" data-i18n="ui.auth.forgotTitle"></h1>
+      <p class="tagline" data-i18n="ui.auth.forgotText"></p>
+      <label class="notch field"><span class="sr" data-i18n="ui.auth.email"></span>
+        <input name="email" type="email" autocomplete="email" required maxlength="254" data-i18n-placeholder="ui.auth.email"></label>
+      <p id="forgot-error" class="error" role="alert"></p>
+      <p id="forgot-ok" class="okmsg" role="status" hidden data-i18n="ui.auth.forgotSent"></p>
+      <div class="auth-actions">
+        <button type="submit" class="notch nbtn primary" data-i18n="ui.auth.forgotSend"></button>
+        <button type="button" class="notch nbtn" id="forgot-back" data-i18n="ui.auth.back"></button>
+      </div>
+    </form>
+    <form id="reset-form" hidden>
+      <img class="emblem" src="witcher-logo.png?v=2" alt="" width="96" height="96">
+      <h1 class="wordmark" data-i18n="ui.auth.resetTitle"></h1>
+      <p class="tagline" data-i18n="ui.auth.resetText"></p>
+      <label class="notch field"><span class="sr" data-i18n="ui.auth.newPassword"></span>
+        <input name="password" type="password" autocomplete="new-password" required minlength="6" data-i18n-placeholder="ui.auth.newPassword"></label>
+      <p id="reset-error" class="error" role="alert"></p>
+      <div class="auth-actions">
+        <button type="submit" class="notch nbtn primary" data-i18n="ui.auth.resetSubmit"></button>
+        <button type="button" class="notch nbtn" id="reset-back" data-i18n="ui.auth.back"></button>
+      </div>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <header class="top">
+      <div class="top-row">
+        <div class="brand-block">
+          <img class="medal" src="witcher-logo.png?v=2" alt="" width="46" height="46">
+          <div><h1 class="brand" data-i18n="ui.appTitle"></h1>
+          <p class="sub" data-i18n="ui.appSubtitle"></p></div>
+        </div>
+        <div class="ring" role="img" aria-live="polite">
+          <svg viewBox="0 0 44 44" aria-hidden="true">
+            <circle class="track" cx="22" cy="22" r="19"/>
+            <circle id="ring-fg" class="fg" cx="22" cy="22" r="19" pathLength="100"/>
+          </svg>
+          <span id="ring-pct">0%</span>
+        </div>
+        <div class="progress-text"><strong id="count"></strong></div>
+        <div class="user">
+          <select class="lang" aria-label="Language"></select>
+          <span id="username" class="uname"></span>
+          <button class="btn ghost small" id="logout" data-i18n="ui.header.signOut"></button>
+        </div>
+      </div>
+      <nav id="decks" class="tabs" role="tablist"></nav>
+      <div class="toolbar">
+        <input id="q" type="search" data-i18n-placeholder="ui.filters.search" autocomplete="off">
+        <select id="dlc"></select>
+        <div id="status" class="seg" role="group"></div>
+      </div>
+    </header>
+    <p id="showing" class="showing"></p>
+    <main id="grid"></main>
+    <div id="empty" class="empty" hidden>
+      <p data-i18n="ui.card.noResults"></p>
+      <button type="button" id="clear" class="btn ghost" data-i18n="ui.filters.clear"></button>
+    </div>
+  </div>
+
+  <dialog id="modal">
+    <button class="close" id="modal-close" aria-label="Close">×</button>
+    <div class="m-art"><img id="m-img" alt=""><div id="m-vers" class="versions"></div></div>
+    <div class="m-body">
+      <h2 id="m-name"></h2>
+      <p id="m-meta" class="meta"></p>
+      <h3 data-i18n="ui.card.locations"></h3>
+      <ul id="m-src"></ul>
+      <div id="m-ab-wrap"><h3 data-i18n="ui.card.abilities"></h3><ul id="m-ab"></ul></div>
+      <p id="m-quote" class="quote"></p>
+      <button id="m-toggle" class="btn primary"></button>
+    </div>
+  </dialog>
+
+
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="config.js"></script>
+  <script src="vendor/supabase.js"></script>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

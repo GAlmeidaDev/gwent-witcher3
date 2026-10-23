@@ -1,0 +1,24 @@
+:root{--bg:#100d0b;--panel:#1d1713;--line:#3b2f25;--line2:#52412f;--text:#efe6d6;--muted:#a39580;--gold:#d4a84b;--gold2:#f0cd7a;--red:#e0302c}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:flex;flex-direction:column;background:var(--bg);color:var(--text);font:15px/1.4 Inter,system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:10px 16px;background:linear-gradient(180deg,#221912,#15100c);border-bottom:1px solid #4a3a26;flex-wrap:wrap}
+h1{font:700 1.05rem Cinzel,Georgia,serif;letter-spacing:.08em;text-transform:uppercase;margin:0;color:var(--gold2)}
+.back{color:var(--gold2);text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:.35rem .8rem;font-size:.85rem;white-space:nowrap}
+.back:hover{border-color:var(--gold)}
+nav{display:flex;gap:6px;margin-left:auto;overflow-x:auto}
+nav a{color:var(--muted);text-decoration:none;padding:.35rem .7rem;border-radius:8px;font-size:.85rem;white-space:nowrap;border:1px solid transparent}
+nav a:hover{color:var(--text)}
+nav a[aria-current=page]{color:#201606;background:var(--gold);font-weight:600}
+#map{flex:1;min-height:0;background:#0b0908}
+#note{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:1000;margin:0;background:rgba(20,16,12,.92);border:1px solid var(--line2);border-radius:10px;padding:.5rem .9rem;font-size:.85rem;color:var(--gold2);max-width:calc(100vw - 32px)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--panel);color:var(--text);border:1px solid var(--line2)}
+.flag{filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))}.flag.approx svg path:last-child{stroke-dasharray:3 2}
+.sign{position:relative}
+.sign i{position:absolute;left:-6px;top:-6px;width:12px;height:12px;background:#f0cd7a;border:2px solid #201606;transform:rotate(45deg);box-shadow:0 0 6px rgba(0,0,0,.7)}
+.sign span{position:absolute;left:12px;top:-11px;white-space:nowrap;font:600 12px Inter,sans-serif;color:#fff4d6;background:rgba(20,16,12,.88);border:1px solid #52412f;border-radius:6px;padding:2px 7px;text-shadow:0 1px 2px #000}
+.target{width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:rgba(224,48,44,.35);border:3px solid var(--red);box-shadow:0 0 0 0 rgba(224,48,44,.7);animation:pulse 1.6s infinite}
+.target.approx{border-style:dashed}
+@keyframes pulse{70%{box-shadow:0 0 0 16px rgba(224,48,44,0)}100%{box-shadow:0 0 0 0 rgba(224,48,44,0)}}
+@media (prefers-reduced-motion:reduce){.target{animation:none}}
+@media (max-width:640px){header{padding:8px 10px}nav{margin-left:0;width:100%}}
