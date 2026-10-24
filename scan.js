@@ -45,22 +45,32 @@ async function getWorker() {
   return worker;
 }
 
-function match(text) {
-  const lines = text.split('\n').map(norm).filter((l) => l.length >= 3);
-  const best = new Map();
-  for (const line of lines) {
+// Compara janelas de palavras vizinhas com cada nome de carta; devolve as 3 melhores.
+function match(lines) {
+  const hits = new Map();
+  for (const words of lines) {
     for (const e of index) {
-      const s = similarity(line, e.key);
-      if (s > (best.get(e.card.id)?.score ?? 0)) best.set(e.card.id, { card: e.card, score: s });
+      const k = e.key.split(' ').length;
+      for (const size of new Set([k - 1, k, k + 1])) {
+        if (size < 1 || size > words.length) continue;
+        for (let i = 0; i + size <= words.length; i++) {
+          const s = similarity(words.slice(i, i + size).join(' '), e.key);
+          const need = e.key.length < 6 ? 0.99 : e.key.length < 9 ? 0.85 : 0.78;
+          if (s >= need && s > (hits.get(e.card.id)?.score ?? 0)) hits.set(e.card.id, { card: e.card, score: s });
+        }
+      }
     }
   }
-  return [...best.values()].filter((m) => m.score >= 0.62).sort((a, b) => b.score - a.score).slice(0, 3);
+  return [...hits.values()].sort((a, b) => b.score - a.score).slice(0, 3);
 }
+
+const linesOf = (data) => (data.blocks ?? []).flatMap((b) => b.paragraphs.flatMap((p) => p.lines))
+  .map((l) => l.words.map((w) => norm(w.text)).filter(Boolean)).filter((w) => w.length);
 
 // Recorta a faixa do nome, amplia e aumenta o contraste antes do OCR.
 function prepare(source, w, h, box) {
   const sx = box.x * w, sy = box.y * h, sw = box.w * w, sh = box.h * h;
-  const scale = Math.min(3, 900 / sw);
+  const scale = Math.min(3, Math.max(1, 1200 / sw));
   const c = document.createElement('canvas');
   c.width = Math.round(sw * scale); c.height = Math.round(sh * scale);
   const g = c.getContext('2d', { willReadFrequently: true });
@@ -75,10 +85,9 @@ function prepare(source, w, h, box) {
 }
 
 function showMatches(list) {
-  const ul = $('scan-results');
-  ul.replaceChildren(...list.map(({ card, score }) => {
-    const li = document.createElement('li');
+  $('scan-results').replaceChildren(...list.map(({ card, score }) => {
     const done = opts.isDone(card.id);
+    const li = document.createElement('li');
     li.innerHTML = '<img alt=""><span class="n"></span><span class="p"></span><button type="button" class="btn"></button>';
     li.querySelector('img').src = card.images?.[0] ?? '';
     li.querySelector('.n').textContent = opts.nameOf(card);
@@ -91,8 +100,8 @@ function showMatches(list) {
   }));
 }
 
-const FULL = { x: 0, y: 0, w: 1, h: 1 };
-const GUIDE = { x: 0.1, y: 0.3, w: 0.8, h: 0.4 };
+// Faixa onde o nome da carta deve ficar (a mesma desenhada na moldura da câmera).
+const GUIDE = { x: 0.12, y: 0.35, w: 0.76, h: 0.3 };
 
 async function recognize(source, w, h, box = GUIDE) {
   if (busy) return;
@@ -100,11 +109,10 @@ async function recognize(source, w, h, box = GUIDE) {
   try {
     const wk = await getWorker();
     $('scan-status').textContent = opts.labels.reading;
-    const { data } = await wk.recognize(prepare(source, w, h, box));
-    const found = match(data.text);
-    $('scan-status').textContent = found.length ? opts.labels.found : opts.labels.none;
-    $('scan-raw').textContent = data.text.trim();
+    const { data } = await wk.recognize(prepare(source, w, h, box), {}, { text: true, blocks: true });
+    const found = match(linesOf(data));
     showMatches(found);
+    $('scan-status').textContent = found.length ? opts.labels.found : opts.labels.none;
   } catch (e) {
     $('scan-status').textContent = opts.labels.error;
   } finally { busy = false; }
@@ -136,7 +144,6 @@ export function openScanner(options) {
   index = [];
   for (const c of opts.cards) for (const n of new Set([c.name, opts.nameOf(c)])) { const key = norm(n); if (key.length >= 3) index.push({ card: c, key }); }
   $('scan-results').replaceChildren();
-  $('scan-raw').textContent = '';
   $('scan-status').textContent = '';
   $('scan').showModal();
   startCamera();
@@ -151,8 +158,9 @@ export function initScanner() {
   $('scan-file').onchange = async (e) => {
     const f = e.target.files[0]; if (!f) return;
     stopCamera();
+    while (busy) await new Promise((r) => setTimeout(r, 100));
     const bmp = await createImageBitmap(f);
-    recognize(bmp, bmp.width, bmp.height, FULL);
+    recognize(bmp, bmp.width, bmp.height, { x: 0, y: 0, w: 1, h: 1 });
     e.target.value = '';
   };
 }

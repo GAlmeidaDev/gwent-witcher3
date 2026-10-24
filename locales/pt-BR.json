@@ -90,14 +90,14 @@
       "title": "Escanear carta",
       "capture": "Ler agora",
       "upload": "Usar uma imagem",
-      "aim": "Aponte a câmera para que o nome da carta fique dentro da moldura.",
+      "aim": "Enquadre o nome de uma carta dentro da caixa.",
       "reading": "Lendo…",
       "found": "É uma destas?",
-      "none": "Nenhuma carta reconhecida. Ajuste o enquadramento ou a luz.",
+      "none": "Nenhuma carta reconhecida. Chegue mais perto, segure firme ou reduza o reflexo.",
       "noCamera": "Não foi possível abrir a câmera. Use uma imagem.",
       "error": "Falha na leitura. Tente de novo.",
-      "mark": "Marcar como coletada",
-      "already": "Já coletada"
+      "already": "Coletada",
+      "mark": "Marcar como coletada"
     }
   },
   "decks": {

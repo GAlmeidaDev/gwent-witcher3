@@ -90,14 +90,14 @@
       "title": "Scan card",
       "capture": "Read now",
       "upload": "Use an image",
-      "aim": "Point the camera so the card name sits inside the frame.",
+      "aim": "Frame one card name inside the box.",
       "reading": "Reading…",
       "found": "Is it one of these?",
-      "none": "No card recognised. Adjust the framing or the light.",
+      "none": "No card recognised. Move closer, hold steady or reduce glare.",
       "noCamera": "Could not open the camera. Use an image instead.",
       "error": "Reading failed. Try again.",
-      "mark": "Mark as collected",
-      "already": "Already collected"
+      "already": "Collected",
+      "mark": "Mark as collected"
     }
   },
   "decks": {
