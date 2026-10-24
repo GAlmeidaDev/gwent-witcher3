@@ -84,6 +84,20 @@
       "approxNote": "Posição aproximada: lugar nomeado mais próximo.",
       "signpost": "Placa",
       "flag": "Local da carta"
+    },
+    "scan": {
+      "open": "Escanear carta",
+      "title": "Escanear carta",
+      "capture": "Ler agora",
+      "upload": "Usar uma imagem",
+      "aim": "Aponte a câmera para que o nome da carta fique dentro da moldura.",
+      "reading": "Lendo…",
+      "found": "É uma destas?",
+      "none": "Nenhuma carta reconhecida. Ajuste o enquadramento ou a luz.",
+      "noCamera": "Não foi possível abrir a câmera. Use uma imagem.",
+      "error": "Falha na leitura. Tente de novo.",
+      "mark": "Marcar como coletada",
+      "already": "Já coletada"
     }
   },
   "decks": {

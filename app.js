@@ -1,6 +1,7 @@
 import { tileTemplate } from './tiles.js';
 import { initI18n, setLang, getLang, languages, t, name, ability, source, deckName, typeName, dlcName, applyStatic } from './i18n.js';
 import * as backend from './backend.js';
+import { openScanner, initScanner } from './scan.js';
 
 const $ = (id) => document.getElementById(id);
 const DECKS = ['Monsters', 'Nilfgaard', 'Northern', 'Scoiatael', 'Skellige', 'Neutral'];
@@ -258,6 +259,16 @@ async function toggle(c) {
     toast(e.code === 'unauthenticated' ? errText(e) : t('ui.errors.saveFailed'));
   }
 }
+
+/* ---------- scanner ---------- */
+initScanner();
+$('scan-open').onclick = () => openScanner({
+  cards,
+  nameOf: (c) => name(c.name),
+  isDone: (id) => done.has(id),
+  onMark: (c) => (done.has(c.id) ? null : toggle(c)),
+  labels: Object.fromEntries(['aim', 'reading', 'found', 'none', 'noCamera', 'error', 'mark', 'already'].map((k) => [k, t(`ui.scan.${k}`)])),
+});
 
 /* ---------- detalhes ---------- */
 let current = null;

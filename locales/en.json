@@ -84,6 +84,20 @@
       "approxNote": "Approximate position: nearest named place.",
       "signpost": "Signpost",
       "flag": "Card location"
+    },
+    "scan": {
+      "open": "Scan card",
+      "title": "Scan card",
+      "capture": "Read now",
+      "upload": "Use an image",
+      "aim": "Point the camera so the card name sits inside the frame.",
+      "reading": "Reading…",
+      "found": "Is it one of these?",
+      "none": "No card recognised. Adjust the framing or the light.",
+      "noCamera": "Could not open the camera. Use an image instead.",
+      "error": "Reading failed. Try again.",
+      "mark": "Mark as collected",
+      "already": "Already collected"
     }
   },
   "decks": {
