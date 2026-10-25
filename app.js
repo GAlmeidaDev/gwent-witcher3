@@ -55,11 +55,28 @@ async function buildAuthBg() {
   bg.append(mosaic);
 }
 
+// Posição na lista (filtros, rolagem, carta aberta): guardada ao sair para o mapa e refeita na volta.
+const STATE_KEY = 'gwent-view';
+const saveView = () => {
+  try { sessionStorage.setItem(STATE_KEY, JSON.stringify({ filters, y: scrollY, card: $('modal').open ? current?.id : null })); } catch {}
+};
+const loadView = () => { try { return JSON.parse(sessionStorage.getItem(STATE_KEY)); } catch { return null; } };
+const clearView = () => { try { sessionStorage.removeItem(STATE_KEY); } catch {} };
+addEventListener('pagehide', () => { if (!$('app').hidden) saveView(); });
+
 async function enter() {
   [cards, done] = await Promise.all([fetch('data/cards.json').then((r) => r.json()), backend.loadProgress()]);
   $('username').textContent = user.name;
   $('auth').hidden = true; $('app').hidden = false;
+  const view = loadView();
+  if (view) { Object.assign(filters, view.filters); $('q').value = filters.q ?? ''; }
   retranslate();
+  if (view) {
+    scrollTo(0, view.y ?? 0);
+    requestAnimationFrame(() => scrollTo(0, view.y ?? 0));
+    const c = view.card && cards.find((x) => x.id === view.card);
+    if (c) openModal(c);
+  }
 }
 
 let mode = 'login'; // 'login' | 'register'
@@ -110,7 +127,7 @@ $('reset-form').addEventListener('submit', async (e) => {
   } catch (err) { $('reset-error').textContent = errText(err); }
 });
 
-$('logout').addEventListener('click', async () => { await backend.signOut().catch(() => {}); location.reload(); });
+$('logout').addEventListener('click', async () => { clearView(); await backend.signOut().catch(() => {}); location.reload(); });
 
 /* ---------- idioma ---------- */
 function buildLangSelects() {
@@ -226,7 +243,8 @@ const MAP_REGION = { novigrad: 'velen', velen: 'velen', skellige: 'skellige', to
 function mapAnchors(src) {
   const link = (href, text, title) => {
     const a = document.createElement('a');
-    a.className = 'maplink'; a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.className = 'maplink'; a.href = href;
+    a.addEventListener('click', saveView);
     a.title = title; a.textContent = text;
     return a;
   };
