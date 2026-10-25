@@ -58,10 +58,18 @@ async function buildAuthBg() {
 // Posição na lista (filtros, rolagem, carta aberta): guardada ao sair para o mapa e refeita na volta.
 const STATE_KEY = 'gwent-view';
 const saveView = () => {
-  try { sessionStorage.setItem(STATE_KEY, JSON.stringify({ filters, y: scrollY, card: $('modal').open ? current?.id : null })); } catch {}
+  const v = JSON.stringify({ filters, y: scrollY, card: $('modal').open ? current?.id : null, at: Date.now() });
+  try { sessionStorage.setItem(STATE_KEY, v); } catch {}
+  try { localStorage.setItem(STATE_KEY, v); } catch {} // vale também se o link abrir em outra aba
 };
-const loadView = () => { try { return JSON.parse(sessionStorage.getItem(STATE_KEY)); } catch { return null; } };
-const clearView = () => { try { sessionStorage.removeItem(STATE_KEY); } catch {} };
+const read = (store) => { try { return JSON.parse(store.getItem(STATE_KEY)); } catch { return null; } };
+const loadView = () => {
+  const s = read(sessionStorage);
+  if (s) return s;
+  const l = read(localStorage);
+  return l && Date.now() - l.at < 2 * 3600 * 1000 ? l : null;
+};
+const clearView = () => { try { sessionStorage.removeItem(STATE_KEY); localStorage.removeItem(STATE_KEY); } catch {} };
 addEventListener('pagehide', () => { if (!$('app').hidden) saveView(); });
 
 async function enter() {
