@@ -57,16 +57,16 @@ async function buildAuthBg() {
 
 // Posição na lista (filtros, rolagem, carta aberta): guardada ao sair para o mapa e refeita na volta.
 const STATE_KEY = 'gwent-view';
-const saveView = () => {
-  const v = JSON.stringify({ filters, y: scrollY, card: $('modal').open ? current?.id : null, at: Date.now() });
-  try { sessionStorage.setItem(STATE_KEY, v); } catch {}
-  try { localStorage.setItem(STATE_KEY, v); } catch {} // vale também se o link abrir em outra aba
-};
+const snapshot = () => JSON.stringify({ filters, y: scrollY, card: $('modal').open ? current?.id : null, at: Date.now() });
+const saveView = () => { try { sessionStorage.setItem(STATE_KEY, snapshot()); } catch {} };
+// Ao clicar numa localização, também fica no navegador (vale se o mapa abrir em outra aba) e só é usado uma vez.
+const saveForMap = () => { saveView(); try { localStorage.setItem(STATE_KEY, snapshot()); } catch {} };
 const read = (store) => { try { return JSON.parse(store.getItem(STATE_KEY)); } catch { return null; } };
 const loadView = () => {
   const s = read(sessionStorage);
   if (s) return s;
   const l = read(localStorage);
+  try { localStorage.removeItem(STATE_KEY); } catch {}
   return l && Date.now() - l.at < 2 * 3600 * 1000 ? l : null;
 };
 const clearView = () => { try { sessionStorage.removeItem(STATE_KEY); localStorage.removeItem(STATE_KEY); } catch {} };
@@ -252,7 +252,7 @@ function mapAnchors(src) {
   const link = (href, text, title) => {
     const a = document.createElement('a');
     a.className = 'maplink'; a.href = href;
-    a.addEventListener('click', saveView);
+    a.addEventListener('click', saveForMap);
     a.title = title; a.textContent = text;
     return a;
   };
