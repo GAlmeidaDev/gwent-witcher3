@@ -1,15 +1,22 @@
 import { tileTemplate } from './tiles.js';
-import { initI18n, setLang, getLang, languages, t, name, ability, source, deckName, typeName, dlcName, applyStatic } from './i18n.js';
+import { initI18n, setLang, getLang, languages, t, name, ability, source, deckName, typeName, rowName, dlcName, applyStatic } from './i18n.js';
 import * as backend from './backend.js';
 import { openScanner, initScanner } from './scan.js';
 
 const $ = (id) => document.getElementById(id);
 const DECKS = ['Monsters', 'Nilfgaard', 'Northern', 'Scoiatael', 'Skellige', 'Neutral'];
 const DLCS = ['Base', 'Hearts of Stone', 'Blood and Wine'];
+const ROWS = ['close', 'ranged', 'agile', 'siege'];
+const ROW_ICON = { close: '⚔️', ranged: '🏹', agile: '⚔️🏹', siege: '🏰' };
 const STATUSES = ['', 'missing', 'done'];
+const TYPES = ['Unit', 'Hero', 'leader', 'Weather', 'Special'];
+const ABILITIES = ['Hero', 'Muster', 'Tight Bond', 'Agile', 'Spy', 'Medic', 'Morale boost', "Commander's Horn", 'Scorch'];
+const SOURCE_GROUPS = { purchase: ['purchase'], won: ['won'], reward: ['random_reward', 'possible_reward', 'quest_reward', 'quest_complete'], base_deck: ['base_deck'] };
+const hasAbility = (c, a) => c.abilities.some((x) => x === a || x.startsWith(`${a}:`) || x.startsWith(`${a} -`));
+const hasSource = (c, g) => c.sources.some((s) => SOURCE_GROUPS[g].includes(s.kind));
 
 let cards = [], done = new Set(), user = null;
-const filters = { q: '', deck: '', dlc: '', status: '' };
+const filters = { q: '', deck: '', dlc: '', status: '', type: '', row: '', ability: '', source: '' };
 const tiles = new Map();   // card.id -> elemento (reaproveitado para não recarregar imagens)
 let haystack = new Map();  // card.id -> texto normalizado e traduzido para busca
 
@@ -150,6 +157,14 @@ function retranslate() {
   if (!cards.length) return;
   $('dlc').replaceChildren(new Option(t('ui.filters.allContent'), ''), ...DLCS.map((d) => new Option(dlcName(d), d)));
   $('dlc').value = filters.dlc;
+  $('ctype').replaceChildren(new Option(t('ui.filters.allTypes'), ''), ...TYPES.map((x) => new Option(typeName(x), x)));
+  $('ctype').value = filters.type;
+  $('crow').replaceChildren(new Option(t('ui.filters.allRows'), ''), ...ROWS.map((x) => new Option(`${ROW_ICON[x]} ${rowName(x)}`, x)));
+  $('crow').value = filters.row;
+  $('cability').replaceChildren(new Option(t('ui.filters.allAbilities'), ''), ...ABILITIES.map((x) => new Option(x, x)));
+  $('cability').value = filters.ability;
+  $('csource').replaceChildren(new Option(t('ui.filters.allSources'), ''), ...Object.keys(SOURCE_GROUPS).map((x) => new Option(t(`ui.filters.src.${x}`), x)));
+  $('csource').value = filters.source;
   $('status').replaceChildren(...STATUSES.map((s) => {
     const b = document.createElement('button');
     b.type = 'button'; b.dataset.v = s; b.textContent = t(`ui.filters.status${s ? s[0].toUpperCase() + s.slice(1) : 'All'}`);
@@ -188,6 +203,10 @@ function render() {
   const list = cards.filter((c) =>
     (!filters.deck || c.deck === filters.deck) && (!filters.dlc || c.dlc === filters.dlc) &&
     (!filters.status || (filters.status === 'done') === done.has(c.id)) &&
+    (!filters.type || c.type === filters.type) &&
+    (!filters.row || c.row === filters.row) &&
+    (!filters.ability || hasAbility(c, filters.ability)) &&
+    (!filters.source || hasSource(c, filters.source)) &&
     (!q || haystack.get(c.id).includes(q)));
   list.sort((a, b) => name(a.name).localeCompare(name(b.name), getLang()));
 
@@ -204,8 +223,8 @@ function render() {
 }
 
 function clearFilters() {
-  Object.assign(filters, { q: '', deck: '', dlc: '', status: '' });
-  $('q').value = ''; $('dlc').value = '';
+  Object.assign(filters, { q: '', deck: '', dlc: '', status: '', type: '', row: '', ability: '', source: '' });
+  $('q').value = ''; $('dlc').value = ''; $('ctype').value = ''; $('crow').value = ''; $('cability').value = ''; $('csource').value = '';
   render();
 }
 
@@ -272,7 +291,7 @@ function mapAnchors(src) {
   });
 }
 
-const metaText = (c) => [deckName(c.deck), typeName(c.type), c.strength && t('ui.card.strength', { value: c.strength }), c.dlc !== 'Base' && dlcName(c.dlc)].filter(Boolean).join(' · ');
+const metaText = (c) => [deckName(c.deck), typeName(c.type), c.row && `${ROW_ICON[c.row]} ${rowName(c.row)}`, c.strength && t('ui.card.strength', { value: c.strength }), c.dlc !== 'Base' && dlcName(c.dlc)].filter(Boolean).join(' · ');
 
 async function toggle(c) {
   const on = !done.has(c.id);
@@ -333,5 +352,9 @@ $('modal').addEventListener('click', (e) => { if (e.target === $('modal')) $('mo
 $('clear').onclick = clearFilters;
 $('q').addEventListener('input', (e) => { filters.q = e.target.value; render(); });
 $('dlc').addEventListener('change', (e) => { filters.dlc = e.target.value; render(); });
+$('ctype').addEventListener('change', (e) => { filters.type = e.target.value; render(); });
+$('crow').addEventListener('change', (e) => { filters.row = e.target.value; render(); });
+$('cability').addEventListener('change', (e) => { filters.ability = e.target.value; render(); });
+$('csource').addEventListener('change', (e) => { filters.source = e.target.value; render(); });
 
 boot();

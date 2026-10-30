@@ -37,7 +37,17 @@
       "statusMissing": "Missing",
       "statusDone": "Collected",
       "showing": "Showing {count}",
-      "clear": "Clear filters"
+      "clear": "Clear filters",
+      "allTypes": "All types",
+      "allRows": "All rows",
+      "allAbilities": "All abilities",
+      "allSources": "How to get",
+      "src": {
+        "purchase": "Purchased",
+        "won": "Won in a match",
+        "reward": "Reward",
+        "base_deck": "Starting deck"
+      }
     },
     "card": {
       "collected": "Collected",
@@ -112,6 +122,12 @@
     "Base": "Base game",
     "Hearts of Stone": "Hearts of Stone",
     "Blood and Wine": "Blood and Wine"
+  },
+  "rows": {
+    "close": "Close combat",
+    "ranged": "Ranged",
+    "agile": "Agile (close or ranged)",
+    "siege": "Siege"
   },
   "types": {
     "Unit": "Unit",

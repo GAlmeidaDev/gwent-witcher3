@@ -37,7 +37,17 @@
       "statusMissing": "Faltando",
       "statusDone": "Coletadas",
       "showing": "Exibindo {count}",
-      "clear": "Limpar filtros"
+      "clear": "Limpar filtros",
+      "allTypes": "Todos os tipos",
+      "allRows": "Todas as fileiras",
+      "allAbilities": "Todas as habilidades",
+      "allSources": "Como obter",
+      "src": {
+        "purchase": "Compra",
+        "won": "Ganha em partida",
+        "reward": "Recompensa",
+        "base_deck": "Deck inicial"
+      }
     },
     "card": {
       "collected": "Coletada",
@@ -112,6 +122,12 @@
     "Base": "Jogo base",
     "Hearts of Stone": "Hearts of Stone",
     "Blood and Wine": "Blood and Wine"
+  },
+  "rows": {
+    "close": "Corpo a corpo",
+    "ranged": "À distância",
+    "agile": "Ágil (corpo a corpo ou distância)",
+    "siege": "Cerco"
   },
   "types": {
     "Unit": "Unidade",

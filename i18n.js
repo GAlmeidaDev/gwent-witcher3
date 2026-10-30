@@ -37,6 +37,7 @@ export const name = (text) => dict('names', text);
 export const ability = (text) => dict('abilities', text);
 export const deckName = (k) => t(`decks.${k}`);
 export const typeName = (k) => t(`types.${k}`);
+export const rowName = (k) => t(`rows.${k}`);
 export const dlcName = (k) => t(`dlc.${k}`);
 
 const list = (items) => new Intl.ListFormat(lang, { type: 'disjunction' }).format(items);
