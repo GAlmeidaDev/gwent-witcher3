@@ -126,7 +126,7 @@
   "rows": {
     "close": "Corpo a corpo",
     "ranged": "À distância",
-    "agile": "Ágil (corpo a corpo ou distância)",
+    "agile": "Ágil",
     "siege": "Cerco"
   },
   "types": {

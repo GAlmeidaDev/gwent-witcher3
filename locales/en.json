@@ -126,7 +126,7 @@
   "rows": {
     "close": "Close combat",
     "ranged": "Ranged",
-    "agile": "Agile (close or ranged)",
+    "agile": "Agile",
     "siege": "Siege"
   },
   "types": {
