@@ -96,9 +96,11 @@ body:has(#auth:not([hidden])) .watermark{display:none}
 .tab:hover{color:var(--text)}
 .tab[aria-selected=true]{color:var(--text);border-bottom-color:var(--gold)}
 
-.toolbar{display:flex;gap:8px;max-width:1500px;margin:0 auto;padding:10px 0 12px}
-.toolbar #q{flex:1;min-width:140px}
-.toolbar select{flex:0 1 auto;max-width:170px;min-width:0}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;max-width:1500px;margin:0 auto;padding:10px 0 12px}
+.toolbar>*{flex:0 0 auto}
+.toolbar #q{flex:1 1 180px;min-width:140px}
+.toolbar select{max-width:190px}
+.toolbar .btn{white-space:nowrap}
 .top input,.top select{height:36px;min-height:0;border-radius:6px;font-size:.9rem;padding:0 .7rem}
 .top select.lang{padding:0 .4rem}
 .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
